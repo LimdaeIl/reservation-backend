@@ -1,6 +1,8 @@
 package com.reservation.backend.auth.application;
 
 import com.reservation.backend.auth.domain.Credential;
+import com.reservation.backend.auth.exception.AuthErrorCode;
+import com.reservation.backend.auth.exception.AuthException;
 import com.reservation.backend.auth.infrastructure.CredentialRepository;
 import com.reservation.backend.auth.presentation.request.SignupRequest;
 import com.reservation.backend.auth.presentation.response.SignupResponse;
@@ -43,19 +45,19 @@ public class SignupService {
 
     private void validateDuplicateEmail(String email) {
         if (memberRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            throw new AuthException(AuthErrorCode.DUPLICATE_EMAIL);
         }
     }
 
     private void validateDuplicateNickname(String nickname) {
         if (memberRepository.existsByNickname(nickname)) {
-            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+            throw new AuthException(AuthErrorCode.DUPLICATE_NICKNAME);
         }
     }
 
     private void validateDuplicatePhone(String phone) {
         if (memberRepository.existsByPhone(phone)) {
-            throw new IllegalArgumentException("이미 사용 중인 전화번호입니다.");
+            throw new AuthException(AuthErrorCode.DUPLICATE_PHONE);
         }
     }
 }

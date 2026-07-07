@@ -1,5 +1,7 @@
 package com.reservation.backend.auth.domain;
 
+import com.reservation.backend.auth.exception.AuthErrorCode;
+import com.reservation.backend.auth.exception.AuthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,13 +43,13 @@ public class Credential {
 
     private void validateMemberId(Long memberId) {
         if (memberId == null) {
-            throw new IllegalArgumentException("인증/인가: 회원 ID는 필수입니다.");
+            throw new AuthException(AuthErrorCode.REQUIRED_MEMBER_ID);
         }
     }
 
     private void validatePassword(String password) {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("비밀번호: 비밀번호는 필수입니다.");
+            throw new AuthException(AuthErrorCode.REQUIRED_PASSWORD);
         }
     }
 }
