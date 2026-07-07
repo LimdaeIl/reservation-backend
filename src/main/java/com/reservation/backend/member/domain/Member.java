@@ -1,5 +1,7 @@
 package com.reservation.backend.member.domain;
 
+import com.reservation.backend.member.exception.MemberErrorCode;
+import com.reservation.backend.member.exception.MemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -54,23 +56,23 @@ public class Member {
 
     private void validateEmail(String email) {
         if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("이메일: 이메일은 필수입니다.");
+            throw new MemberException(MemberErrorCode.REQUIRED_MEMBER_EMAIL);
         }
     }
 
     private void validateNickname(String nickname) {
         if (nickname == null || nickname.isBlank()) {
-            throw new IllegalArgumentException("닉네임: 닉네임은 필수입니다.");
+            throw new MemberException(MemberErrorCode.REQUIRED_MEMBER_NICKNAME);
         }
 
         if (nickname.length() < 2 || nickname.length() > 12) {
-            throw new IllegalArgumentException("닉네임: 닉네임은 2자 이상 12자 이하입니다.");
+            throw new MemberException(MemberErrorCode.INVALID_NICKNAME_LENGTH);
         }
     }
 
     private void validatePhone(String phone) {
         if (phone == null || phone.isBlank()) {
-            throw new IllegalArgumentException("휴대전화번호: 휴대전화번호는 필수입니다.");
+            throw new MemberException(MemberErrorCode.REQUIRED_MEMBER_NICKNAME);
         }
     }
 }
