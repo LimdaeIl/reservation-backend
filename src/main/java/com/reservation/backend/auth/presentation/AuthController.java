@@ -3,6 +3,7 @@ package com.reservation.backend.auth.presentation;
 import com.reservation.backend.auth.application.SignupService;
 import com.reservation.backend.auth.presentation.request.SignupRequest;
 import com.reservation.backend.auth.presentation.response.SignupResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,9 @@ public class AuthController {
     private final SignupService signupService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<SignupResponse> signup(
+            @Valid @RequestBody SignupRequest request
+    ) {
         SignupResponse response = signupService.signup(request);
 
         return ResponseEntity
