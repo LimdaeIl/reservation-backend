@@ -39,4 +39,38 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private MemberStatus status;
+
+    private Member(String email, String nickname, String phone) {
+        this.email = email;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.role = MemberRole.USER;
+        this.status = MemberStatus.ACTIVE;
+    }
+
+    public static Member create(String email, String nickname, String phone) {
+        return new Member(email, nickname, phone);
+    }
+
+    private void validateEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("이메일: 이메일은 필수입니다.");
+        }
+    }
+
+    private void validateNickname(String nickname) {
+        if (nickname == null || nickname.isBlank()) {
+            throw new IllegalArgumentException("닉네임: 닉네임은 필수입니다.");
+        }
+
+        if (nickname.length() < 2 || nickname.length() > 12) {
+            throw new IllegalArgumentException("닉네임: 닉네임은 2자 이상 12자 이하입니다.");
+        }
+    }
+
+    private void validatePhone(String phone) {
+        if (phone == null || phone.isBlank()) {
+            throw new IllegalArgumentException("휴대전화번호: 휴대전화번호는 필수입니다.");
+        }
+    }
 }
