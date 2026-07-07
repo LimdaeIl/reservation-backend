@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: reservation-backend-app
+
+  profiles:
+    active: dev
