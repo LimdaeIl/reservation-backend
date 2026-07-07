@@ -9,6 +9,7 @@ import com.reservation.backend.auth.presentation.response.SignupResponse;
 import com.reservation.backend.member.domain.Member;
 import com.reservation.backend.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ public class SignupService {
 
     private final CredentialRepository credentialRepository;
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public SignupResponse signup(SignupRequest request) {
         validateDuplicateEmail(request.email());
@@ -35,7 +37,7 @@ public class SignupService {
 
         Credential credential = Credential.create(
                 member.getId(),
-                request.password()
+                passwordEncoder.encode(request.password())
         );
 
         credentialRepository.save(credential);
