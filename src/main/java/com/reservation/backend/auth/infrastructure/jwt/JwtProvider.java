@@ -155,6 +155,10 @@ public class JwtProvider {
         return getRefreshTokenRemainingMillis(token) / 1000;
     }
 
+    public long getRefreshTokenExpirationMillis() {
+        return jwtProperties.refreshTokenExpiration().toMillis();
+    }
+
     private String createToken(
             Long memberId,
             String tokenType,

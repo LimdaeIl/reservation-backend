@@ -1,13 +1,16 @@
 package com.reservation.backend.auth.infrastructure;
 
+import com.reservation.backend.auth.infrastructure.jwt.RotateResult;
 import com.reservation.backend.auth.exception.AuthErrorCode;
 import com.reservation.backend.auth.exception.AuthException;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -15,6 +18,22 @@ import org.springframework.stereotype.Repository;
 public class RefreshTokenRepository {
 
     private static final String KEY_PREFIX = "auth:refresh_token:";
+
+    private static final DefaultRedisScript<Long> ROTATE_IF_MATCHES_SCRIPT =
+            new DefaultRedisScript<>("""
+                    local current = redis.call('GET', KEYS[1])
+                    
+                    if current == false then
+                        return -1
+                    end
+                    
+                    if current ~= ARGV[1] then
+                        return 0
+                    end
+                    
+                    redis.call('PSETEX', KEYS[1], ARGV[3], ARGV[2])
+                    return 1
+                    """, Long.class);
 
     private final StringRedisTemplate redisTemplate;
 
@@ -39,10 +58,40 @@ public class RefreshTokenRepository {
         }
     }
 
-
     public void deleteByMemberId(Long memberId) {
         try {
             redisTemplate.delete(key(memberId));
+        } catch (RedisConnectionFailureException | RedisSystemException e) {
+            throw new AuthException(AuthErrorCode.TOKEN_STORE_UNAVAILABLE);
+        }
+    }
+
+    public void rotateIfMatches(
+            Long memberId,
+            String hashedOldRefreshToken,
+            String hashedNewRefreshToken,
+            Duration refreshTokenTtl
+    ) {
+        try {
+            validateRefreshTokenTtl(refreshTokenTtl);
+
+            Long resultCode = redisTemplate.execute(
+                    ROTATE_IF_MATCHES_SCRIPT,
+                    Collections.singletonList(key(memberId)),
+                    hashedOldRefreshToken,
+                    hashedNewRefreshToken,
+                    String.valueOf(refreshTokenTtl.toMillis())
+            );
+
+            RotateResult result = RotateResult.from(resultCode);
+
+            switch (result) {
+                case SUCCESS -> {
+                    return;
+                }
+                case NOT_FOUND, MISMATCH ->
+                        throw new AuthException(AuthErrorCode.INVALID_REFRESH_TOKEN);
+            }
         } catch (RedisConnectionFailureException | RedisSystemException e) {
             throw new AuthException(AuthErrorCode.TOKEN_STORE_UNAVAILABLE);
         }
