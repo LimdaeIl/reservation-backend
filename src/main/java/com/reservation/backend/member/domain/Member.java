@@ -75,4 +75,8 @@ public class Member {
             throw new MemberException(MemberErrorCode.REQUIRED_MEMBER_NICKNAME);
         }
     }
+
+    public boolean isActive() {
+        return this.status == MemberStatus.ACTIVE;
+    }
 }

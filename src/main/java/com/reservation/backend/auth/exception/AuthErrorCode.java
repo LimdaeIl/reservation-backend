@@ -17,7 +17,8 @@ public enum AuthErrorCode implements ErrorCode {
     DUPLICATE_PHONE(HttpStatus.CONFLICT, "인증: 이미 사용 중인 휴대폰 번호입니다."),
     DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "인증: 이미 사용 중인 닉네임입니다."),
 
-    INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "인증: 이메일 또는 비밀번호가 올바르지 않습니다."),
+    NOT_FOUND_CREDENTIAL(HttpStatus.BAD_REQUEST, "인증: 해당 계정의 비밀번호가 존재하지 않습니다."),
+    INVALID_SIGN_IN(HttpStatus.UNAUTHORIZED, "인증: 이메일 또는 비밀번호가 올바르지 않습니다."),
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "인증: Access Token이 유효하지 않습니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "인증: Refresh Token이 유효하지 않습니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "인증: Access Token이 만료되었습니다."),
