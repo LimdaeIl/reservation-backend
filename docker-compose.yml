@@ -37,5 +37,22 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7.4
+    container_name: reservation-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:${REDIS_CONTAINER_PORT}"
+    command:
+      [
+        "redis-server",
+        "--appendonly", "yes",
+        "--user", "${REDIS_USERNAME}", "on", ">${REDIS_PASSWORD}", "~*", "+@all",
+        "--user", "default", "off"
+      ]
+    volumes:
+      - redis_data:/data
+
 volumes:
   mysql_data:
+  redis_data:
