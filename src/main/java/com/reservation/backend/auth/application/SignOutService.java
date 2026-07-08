@@ -30,6 +30,12 @@ public class SignOutService {
         if (!hashedRefreshToken.equals(storedRefreshTokenHash)) {
             throw new AuthException(AuthErrorCode.MISMATCH_REFRESH_TOKEN);
         }
+
+        refreshTokenRepository.deleteByMemberId(memberId);
+    }
+
+    public void signOutByMemberId(Long memberId) {
+        refreshTokenRepository.deleteByMemberId(memberId);
     }
 
     private void validateRefreshToken(String refreshToken) {
