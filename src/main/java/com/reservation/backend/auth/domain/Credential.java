@@ -2,6 +2,7 @@ package com.reservation.backend.auth.domain;
 
 import com.reservation.backend.auth.exception.AuthErrorCode;
 import com.reservation.backend.auth.exception.AuthException;
+import com.reservation.backend.common.audit.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "v1_credentials")
 @Entity
-public class Credential {
+public class Credential extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
