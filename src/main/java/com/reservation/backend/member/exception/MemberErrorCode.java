@@ -24,7 +24,9 @@ public enum MemberErrorCode implements ErrorCode {
     INVALID_EMAIL_LENGTH(HttpStatus.BAD_REQUEST, "회원: 이메일은 100자 이하로 입력해주세요."),
     INVALID_PHONE_FORMAT(HttpStatus.BAD_REQUEST, "회원: 올바른 휴대폰 번호 형식이 아닙니다."),
     INVALID_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "회원: 닉네임은 2자 이상 12자 이하로 입력해주세요."),
-    INVALID_ROLE(HttpStatus.BAD_REQUEST, "회원: 권한은 필수입니다.");
+    INVALID_ROLE(HttpStatus.BAD_REQUEST, "회원: 권한은 필수입니다."),
+    MEMBER_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "회원: 비활성화 또는 탈퇴한 회원입니다.")
+    ;
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;
