@@ -1,5 +1,6 @@
 package com.reservation.backend.concert.domain;
 
+import com.reservation.backend.common.audit.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,19 +18,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "v1_concert_images")
 @Entity
-public class ConcertImage {
+public class ConcertImage extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "image_url", nullable = false, length = 512)
     private String imageUrl;
 
-    @Column(nullable = false)
+    @Column(name = "sort_order", nullable = false)
     private int sortOrder;
 
-    @Column(nullable = false)
+    @Column(name = "representative", nullable = false)
     private boolean representative;
 
     @ManyToOne(fetch = FetchType.LAZY)

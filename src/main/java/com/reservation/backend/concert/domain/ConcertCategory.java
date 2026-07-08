@@ -1,5 +1,6 @@
 package com.reservation.backend.concert.domain;
 
+import com.reservation.backend.common.audit.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,18 +15,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "v1_concert_categories")
 @Entity
-public class ConcertCategory {
+public class ConcertCategory extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String code; // BALLAD, IDOL, HIPHOP
+    @Column(name = "genre", nullable = false, unique = true)
+    private String genre; // BALLAD, IDOL, HIPHOP
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name; // 발라드, 아이돌, 힙합
 
-    @Column(nullable = false)
+    @Column(name ="active", nullable = false)
     private boolean active;
 }
