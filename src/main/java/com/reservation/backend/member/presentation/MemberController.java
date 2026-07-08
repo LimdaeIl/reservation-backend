@@ -54,4 +54,6 @@ public class MemberController {
     // 휴대전화번호 변경
 
     // 닉네임 변경
+
+    // 회원탈퇴
 }
