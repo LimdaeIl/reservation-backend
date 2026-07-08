@@ -1,5 +1,6 @@
 package com.reservation.backend.member.domain;
 
+import com.reservation.backend.common.audit.BaseAuditEntity;
 import com.reservation.backend.member.exception.MemberErrorCode;
 import com.reservation.backend.member.exception.MemberException;
 import jakarta.persistence.Column;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "v1_members")
 @Entity
-public class Member {
+public class Member extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
