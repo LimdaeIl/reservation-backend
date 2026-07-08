@@ -3,14 +3,15 @@ package com.reservation.backend.auth.presentation;
 import com.reservation.backend.auth.application.RefreshTokenCookieProvider;
 import com.reservation.backend.auth.application.ReissueTokenService;
 import com.reservation.backend.auth.application.SignInService;
+import com.reservation.backend.auth.application.SignOutService;
 import com.reservation.backend.auth.application.SignupService;
 import com.reservation.backend.auth.presentation.request.SignInRequest;
-import com.reservation.backend.auth.presentation.request.SignupRequest;
+import com.reservation.backend.auth.presentation.request.SignUpRequest;
 import com.reservation.backend.auth.presentation.response.ReissueResponse;
 import com.reservation.backend.auth.presentation.response.ReissueTokenResult;
 import com.reservation.backend.auth.presentation.response.SignInResponse;
 import com.reservation.backend.auth.presentation.response.SignInResult;
-import com.reservation.backend.auth.presentation.response.SignupResponse;
+import com.reservation.backend.auth.presentation.response.SignUpResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +32,13 @@ public class AuthController {
     private final SignInService signInService;
     private final RefreshTokenCookieProvider cookieProvider;
     private final ReissueTokenService reissueTokenService;
+    private final SignOutService signOutService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<SignupResponse> signup(
-            @Valid @RequestBody SignupRequest request
+    public ResponseEntity<SignUpResponse> signUp(
+            @Valid @RequestBody SignUpRequest request
     ) {
-        SignupResponse response = signupService.signup(request);
+        SignUpResponse response = signupService.signUp(request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -83,5 +85,16 @@ public class AuthController {
                         reissueTokenResult.newRefreshToken()
                 )
         );
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<Void> signOut(
+            @CookieValue(value = "refreshToken", required = false) String refreshToken,
+            HttpServletResponse response
+    ) {
+        signOutService.signOut(refreshToken);
+        cookieProvider.removeRefreshTokenCookie(response);
+
+        return ResponseEntity.noContent().build();
     }
 }

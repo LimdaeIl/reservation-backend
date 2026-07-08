@@ -4,8 +4,8 @@ import com.reservation.backend.auth.domain.Credential;
 import com.reservation.backend.auth.exception.AuthErrorCode;
 import com.reservation.backend.auth.exception.AuthException;
 import com.reservation.backend.auth.infrastructure.CredentialRepository;
-import com.reservation.backend.auth.presentation.request.SignupRequest;
-import com.reservation.backend.auth.presentation.response.SignupResponse;
+import com.reservation.backend.auth.presentation.request.SignUpRequest;
+import com.reservation.backend.auth.presentation.response.SignUpResponse;
 import com.reservation.backend.member.domain.Member;
 import com.reservation.backend.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class SignupService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SignupResponse signup(SignupRequest request) {
+    public SignUpResponse signUp(SignUpRequest request) {
         validateDuplicateEmail(request.email());
         validateDuplicateNickname(request.nickname());
         validateDuplicatePhone(request.phone());
@@ -42,7 +42,7 @@ public class SignupService {
 
         credentialRepository.save(credential);
 
-        return SignupResponse.from(savedMember);
+        return SignUpResponse.from(savedMember);
     }
 
     private void validateDuplicateEmail(String email) {

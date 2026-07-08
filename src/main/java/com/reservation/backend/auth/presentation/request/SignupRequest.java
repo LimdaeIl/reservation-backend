@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record SignupRequest(
+public record SignUpRequest(
 
         @NotBlank(message = "회원가입: 이메일은 필수입니다.")
         @Email(message = "회원가입: 올바른 이메일 형식이 아닙니다.")
