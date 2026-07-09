@@ -19,6 +19,7 @@ public class ConcertCategory extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "concert_category_id")
     private Long id;
 
     @Column(name = "genre", nullable = false, unique = true)
@@ -29,4 +30,16 @@ public class ConcertCategory extends BaseAuditEntity {
 
     @Column(name ="active", nullable = false)
     private boolean active;
+
+    private ConcertCategory( String genre, String name) {
+        this.genre = genre;
+        this.name = name;
+        this.active = true;
+    }
+
+    public static ConcertCategory create( String genre, String name) {
+        return new ConcertCategory(genre, name);
+    }
+
+
 }

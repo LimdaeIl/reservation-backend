@@ -25,4 +25,19 @@ public class VenueInfo {
 
     @Column(name = "longitude")
     private Double longitude;
+
+    private VenueInfo(String venueName, String address, String detailAddress, Double latitude,
+            Double longitude) {
+        this.venueName = venueName;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public static VenueInfo create(String venueName, String address, String detailAddress,
+            Double latitude,
+            Double longitude) {
+        return new VenueInfo(venueName, address, detailAddress, latitude, longitude);
+    }
 }
