@@ -15,7 +15,11 @@ public enum ConcertErrorCode implements ErrorCode {
     REQUIRED_CONCERT_CATEGORY_GENRE(HttpStatus.BAD_REQUEST, "콘서트 카테고리: 장르는 필수입니다."),
     REQUIRED_CONCERT_CATEGORY_NAME(HttpStatus.BAD_REQUEST, "콘서트 카테고리: 카테고리명은 필수입니다."),
     INVALID_CONCERT_CATEGORY_GENRE_LENGTH(HttpStatus.BAD_REQUEST, "콘서트 카테고리: 장르는 30자 이하로 입력해주세요."),
-    INVALID_CONCERT_CATEGORY_NAME_LENGTH(HttpStatus.BAD_REQUEST, "콘서트 카테고리: 카테고리명은 50자 이하로 입력해주세요.");
+    INVALID_CONCERT_CATEGORY_NAME_LENGTH(HttpStatus.BAD_REQUEST, "콘서트 카테고리: 카테고리명은 50자 이하로 입력해주세요."),
+
+    INVALID_CONCERT_PERIOD(HttpStatus.BAD_REQUEST, "콘서트: 콘서트 기간이 유효하지 않습니다."),
+    INVALID_CONCERT_PERIOD(HttpStatus.BAD_REQUEST, "콘서트: 콘서트 기간이 유효하지 않습니다."),
+    INVALID_REPRESENTATIVE_IMAGE(HttpStatus.BAD_REQUEST, "콘서트: 대표 이미지는 정확히 1개여야 합니다.");
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;

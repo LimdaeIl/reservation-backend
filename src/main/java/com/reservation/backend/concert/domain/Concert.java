@@ -1,6 +1,8 @@
 package com.reservation.backend.concert.domain;
 
 import com.reservation.backend.common.audit.BaseAuditEntity;
+import com.reservation.backend.concert.exception.ConcertErrorCode;
+import com.reservation.backend.concert.exception.ConcertException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -16,6 +18,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -53,20 +56,50 @@ public class Concert extends BaseAuditEntity {
     @OrderBy("sortOrder ASC")
     private List<ConcertImage> images = new ArrayList<>();
 
-    private Concert(String title, String description, VenueInfo venueInfo,
-            ConcertCategory category, List<ConcertImage> images) {
+    @Column(name = "start_date_time", nullable = false)
+    private LocalDateTime startDateTime;
+
+    @Column(name = "end_date_time", nullable = false)
+    private LocalDateTime endDateTime;
+
+    private Concert(
+            String title,
+            String description,
+            VenueInfo venueInfo,
+            ConcertCategory category,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime
+    ) {
+        validatePeriod(startDateTime, endDateTime);
+
         this.title = title;
         this.description = description;
         this.venueInfo = venueInfo;
         this.category = category;
-        this.status = ConcertStatus.OPEN; // 편의 상 OPEN 설정
-        this.images = images;
+        this.status = ConcertStatus.OPEN;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
 
-    public static Concert create(String title, String description, VenueInfo venueInfo,
-            ConcertCategory category, List<ConcertImage> images) {
-        return new Concert(title, description, venueInfo, category, images);
+    public static Concert create(
+            String title,
+            String description,
+            VenueInfo venueInfo,
+            ConcertCategory category,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime
+    ) {
+        return new Concert(title, description, venueInfo, category, startDateTime, endDateTime);
     }
 
+    private void validatePeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (!endDateTime.isAfter(startDateTime)) {
+            throw new ConcertException(ConcertErrorCode.INVALID_CONCERT_PERIOD);
+        }
+    }
 
+    public void addImage(String imageUrl, int sortOrder, boolean representative) {
+        ConcertImage image = ConcertImage.create(imageUrl, sortOrder, representative, this);
+        this.images.add(image);
+    }
 }
