@@ -28,4 +28,9 @@ public class ConcertCategoryController {
 
         return ResponseEntity.ok(response);
     }
+
+    // 콘서트 카테고리 조회
+    // 콘서트 카테고리 수정
+    // 콘서트 카테고리 삭제
+
 }
