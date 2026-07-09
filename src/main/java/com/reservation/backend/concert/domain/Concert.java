@@ -52,4 +52,21 @@ public class Concert extends BaseAuditEntity {
     @OneToMany(mappedBy = "concert", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("sortOrder ASC")
     private List<ConcertImage> images = new ArrayList<>();
+
+    private Concert(String title, String description, VenueInfo venueInfo,
+            ConcertCategory category, List<ConcertImage> images) {
+        this.title = title;
+        this.description = description;
+        this.venueInfo = venueInfo;
+        this.category = category;
+        this.status = ConcertStatus.OPEN; // 편의 상 OPEN 설정
+        this.images = images;
+    }
+
+    public static Concert create(String title, String description, VenueInfo venueInfo,
+            ConcertCategory category, List<ConcertImage> images) {
+        return new Concert(title, description, venueInfo, category, images);
+    }
+
+
 }

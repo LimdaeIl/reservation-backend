@@ -36,5 +36,18 @@ public class ConcertImage extends BaseAuditEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concert_id", nullable = false)
     private Concert concert;
+
+    private ConcertImage(String imageUrl, int sortOrder, boolean representative, Concert concert) {
+        this.imageUrl = imageUrl;
+        this.sortOrder = sortOrder;
+        this.representative = representative;
+        this.concert = concert;
+    }
+
+    public static ConcertImage create(String imageUrl, int sortOrder, boolean representative,
+            Concert concert) {
+        return new ConcertImage(imageUrl, sortOrder, representative, concert);
+    }
+
 }
 
